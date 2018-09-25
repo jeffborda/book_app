@@ -2,15 +2,45 @@
 <html lang="en">
 <head>
 
-
   <link rel="stylesheet" type="text/css" href="/styles/base.css" />
 
 
 </head>
 <body>
-  <h1>Proof of life</h1>
+  <main>
+    <h1>Search By Title Or Author</h1>
+    <form action="/searches" method="post">
+      <input type="text" name="search" placeholder="Enter a title or author" required>
+      <fielset>
+        <label for="title">
+          <span>Title</span>
+          <input type="radio" name="search" value="title" required>
+        </label>
+      </fielset>
+      
+        
+      <fielset>
+        <label for="author">
+            <span>Author</span>
+            <input type="radio" name="search" value="author" required>
+        </label>
+      </fielset>
+
+      <button type="submit">Search Google API</button>
+    </form>
+
+  
 
 
+
+
+
+
+
+
+
+  </form>
+  </main>
 </body>
 
 </html>
