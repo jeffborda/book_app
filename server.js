@@ -47,7 +47,12 @@ function createSearch(request, response) {
         //console.log('bookArray is: ', bookArray);
         response.render('pages/searches/show', {bookList: books});
       })
-    .catch (error => console.log('An error occurs from createSearch: ', error));
+    .catch (
+      // error => console.log('An error occurs from createSearch: ', error)
+      error => {
+        // console.log('My-error: ', error);
+        response.render('pages/error', {errorMsg: error});
+      });
 }
 
 
