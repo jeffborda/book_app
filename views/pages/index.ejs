@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+  <link rel="stylesheet" type="text/css" href="/styles/reset.css" />
   <link rel="stylesheet" type="text/css" href="/styles/base.css" />
-
+  <link rel="stylesheet" type="text/css" href="/styles/layout.css" />
+  <link rel="stylesheet" type="text/css" href="/styles/modules.css" />
+  <link rel="stylesheet" type="text/css" href="/styles/icons.css" />
 
 </head>
 <body>
+  
   <main>
-    <h1>Search By Title Or Author</h1>
+    <nav>
+      <h1>Best Books!</h1>
+    </nav>
+    <div class="search-by">
+      <h2>Search By Title Or Author</h2>
+    </div>
     <form action="/searches" method="post">
       <input type="text" name="search" placeholder="Enter a title or author" required>
       <fielset>
