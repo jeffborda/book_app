@@ -1,0 +1,23 @@
+main {
+    display: grid;
+    grid-template-columns: 200px 300px 200px;
+    grid-template-rows: 50px 50px 100px 50px 100px 50px 100px 50px 100px 100px;
+}
+
+nav {
+    grid-column: 1/4;
+    grid-row: 1;
+}
+
+.search-by {
+    grid-column: 1/4;
+    grid-row: 2/3;
+    text-align: center;
+}
+
+
+
+
+
+
+
