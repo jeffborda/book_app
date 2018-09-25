@@ -36,6 +36,7 @@ function createSearch(request, response) {
 
     .then(result => {
       const bookArray = result.body.items.map(book => new Book(book));
+      //reduce the length to 10
       return bookArray;
     })
     .then(
