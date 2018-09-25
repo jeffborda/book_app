@@ -40,8 +40,8 @@ function createSearch(request, response) {
     })
     .then(
       bookArray => {
-        console.log('bookArray is: ', bookArray);
-        response.render('pages/searches/googleresult', {bookList: bookArray});
+        //console.log('bookArray is: ', bookArray);
+        response.render('pages/searches/show', {bookList: bookArray});
       })
     .catch (error => console.log('An error occurs from createSearch: ', error));
 }
