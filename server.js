@@ -17,6 +17,15 @@ app.get('/', (request, response) => {
 })
 
 
+app.get('/hello', (request, response) => {
+  response.render('pages/index');
+})
+
+
+
+
+// app.get('/hello');
+
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 
