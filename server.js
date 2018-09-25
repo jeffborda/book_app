@@ -36,22 +36,26 @@ function createSearch(request, response) {
 
     .then(result => {
       const bookArray = result.body.items.map(book => new Book(book));
-      return bookArray;
+      const bookArrayLimit10 = [];
+      for(let i = 0; i < 10; i++) {
+        bookArrayLimit10.push(bookArray[i]);
+      }
+      return bookArrayLimit10;
     })
     .then(
-      bookArray => {
+      books => {
         //console.log('bookArray is: ', bookArray);
-        response.render('pages/searches/show', {bookList: bookArray});
+        response.render('pages/searches/show', {bookList: books});
       })
     .catch (error => console.log('An error occurs from createSearch: ', error));
 }
 
 
-function Book (bookfun) {
-  this.title= bookfun.volumeInfo.title;
-  this.author=bookfun.volumeInfo.authors[0] || 'No author found'; //maybe multiple authors
-  this.year_published= bookfun.volumeInfo.publishedDate;
-  this.img_url= bookfun.volumeInfo.imageLinks.thumbnail || 'No author found';
+function Book (book) {
+  this.title = book.volumeInfo.title || 'No book title found.';
+  this.author = book.volumeInfo.authors[0] || 'No author found.'; //maybe multiple authors
+  this.description = book.volumeInfo.description || 'No description found.';
+  this.img_url = book.volumeInfo.imageLinks.thumbnail || 'No image found.';
 }
 
 
