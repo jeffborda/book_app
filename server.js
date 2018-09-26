@@ -57,10 +57,12 @@ function createSearch(request, response) {
 
 
 function Book (book) {
+
+  const placeHolderImg = 'https://i.imgur.com/J5LVHEL.jpg'
   this.title = book.volumeInfo.title || 'No book title found.';
   this.author = book.volumeInfo.authors[0] || 'No author found.'; //maybe multiple authors
   this.description = book.volumeInfo.description || 'No description found.';
-  this.img_url = book.volumeInfo.imageLinks.thumbnail || 'No image found.';
+  this.img_url = book.volumeInfo.imageLinks.thumbnail || placeHolderImg;
 }
 
 
