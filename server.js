@@ -18,6 +18,7 @@ const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('error', err => console.log(err));
 
+
 // Set the view engine for server-side templating
 app.set('view engine', 'ejs');
 app.use(express.static('./public'));
@@ -33,6 +34,9 @@ app.get('/searches/new', (request, response) => {
 })
 
 app.post('/searches', createSearch);
+
+
+
 
 
 function createSearch(request, response) {
@@ -83,6 +87,7 @@ function Book (book) {
   this.img_url = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : placeHolderImg;
   this.isbn = book.volumeInfo.industryIdentifiers ? `ISBN: ${book.volumeInfo.industryIdentifiers[0].identifier}` : 'No ISBN found.'
   this.bookshelf = 'Please put in bookshelf';
+  this.save='Save';
 }
 
 // Helper functions
