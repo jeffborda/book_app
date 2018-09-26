@@ -1,20 +1,32 @@
 'use strict';
 
+// Application Dependencies
 const express = require('express');
 const superagent = require('superagent');
+const pg = require('pg');
 require('dotenv').config();
 
+// Application Setup
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.set('view engine', 'ejs');
-app.use(express.static('./public'));
+// Utilize ExpressJS functionality to parse the body of the request
 app.use(express.urlencoded({ extended: true }));
 
+// Database Setup
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+client.on('error', err => console.log(err));
 
-app.get('/', (request, response) => {
-  response.render('pages/index');
-})
+// Set the view engine for server-side templating
+app.set('view engine', 'ejs');
+app.use(express.static('./public'));
+
+// API Routes
+app.get('/', getBooks);
+// app.get('/', (request, response) => {
+//   response.render('pages/index');
+// })
 
 
 app.get('/hello', (request, response) => {
@@ -37,7 +49,7 @@ function createSearch(request, response) {
     .then(result => {
       const bookArray = result.body.items.map(book => new Book(book));
       const bookArrayLimit10 = [];
-      
+
       if(bookArray.length > 10) {
         for(let i = 0; i < 10; i++) {
           bookArrayLimit10.push(bookArray[i]);
@@ -69,6 +81,18 @@ function Book (book) {
   this.img_url = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : placeHolderImg;
   this.isbn = book.volumeInfo.industryIdentifiers ? `ISBN: ${book.volumeInfo.industryIdentifiers[0].identifier}` : 'No ISBN found.'
 }
+
+// Helper functions
+function getBooks(request, response) {
+  let SQL = 'SELECT * FROM books;';
+
+  return client.query(SQL)
+    .then(results => response.render('pages/index', {bookList: results.rows}))
+    .catch(error => {
+      response.render('pages/error', {errorMsg: error});
+    });
+}
+
 
 
 
