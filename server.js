@@ -37,10 +37,14 @@ function createSearch(request, response) {
     .then(result => {
       const bookArray = result.body.items.map(book => new Book(book));
       const bookArrayLimit10 = [];
-      for(let i = 0; i < 10; i++) {
-        bookArrayLimit10.push(bookArray[i]);
+      
+      if(bookArray.length > 10) {
+        for(let i = 0; i < 10; i++) {
+          bookArrayLimit10.push(bookArray[i]);
+        }
+        return bookArrayLimit10
       }
-      return bookArrayLimit10;
+      return bookArray;
     })
     .then(
       books => {
@@ -60,9 +64,10 @@ function Book (book) {
 
   const placeHolderImg = 'https://i.imgur.com/J5LVHEL.jpg'
   this.title = book.volumeInfo.title || 'No book title found.';
-  this.author = book.volumeInfo.authors[0] || 'No author found.'; //maybe multiple authors
+  this.author = book.volumeInfo.authors[0] ? book.volumeInfo.authors[0] : 'No author found.'; //maybe multiple authors
   this.description = book.volumeInfo.description || 'No description found.';
-  this.img_url = book.volumeInfo.imageLinks.thumbnail || placeHolderImg;
+  this.img_url = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : placeHolderImg;
+  this.isbn = book.volumeInfo.industryIdentifiers ? `ISBN: ${book.volumeInfo.industryIdentifiers[0].identifier}` : 'No ISBN found.'
 }
 
 
