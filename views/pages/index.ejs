@@ -26,6 +26,18 @@
             <img src="<%=book.image_url %>" alt="book image">
             <li><%=book.description %></li>
             <li><%=book.isbn %></li>
+
+            <form class="*" action="/update" method="post">  
+              <input type="text" name="title" value="<%= book.title %>" required>
+              <input type="text" name="author" value="<%= book.author %>" required>
+              <input type="text" name="isbn" value="<%= book.isbn %>" required>
+              <input type="text" name="img_url" value="<%= book.img_url %>" required>
+              <input type="text" name="description" value="<%= book.description %>" required>
+              <input type="text" name="bookshelf" placeholder="Bookshelf Name" required>                       
+              <button type="submit">Save to My Bookshelf</button>
+              <button type="submit">Delete This Book</button>
+          </form>
+
         <% }) %>
     </ul>
 

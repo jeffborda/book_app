@@ -29,7 +29,7 @@ app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new');
 })
 
-app.get('/pages/books/detail', (request, response) => { 
+app.get('/pages/books/detail', (request, response) => {
   response.render('pages/books/detail');
 })
 
@@ -37,11 +37,12 @@ app.get('/pages/books/show', (request, response) => {
   response.render('pages/books/show');
 })
 
-
-
 app.post('/searches', createSearch);
 app.post('/create', createBook);
 app.get('/create/:id', getBook);
+
+app.post('/update', updateBook);   //to listen for "update" on index.ejs
+
 
 
 function createSearch(request, response) {
@@ -132,7 +133,24 @@ function getBook (request, response) {
     );
 }
 
+function updateBook (request, response){
+  let SQL = `
+    UPDATE books
+    SET 
+      title=$1,
+      author=$2,
+      isbn=$3,
+      image_url=$4,
+      description=$5,
+      bookshelf=$6
+    WHERE title=$1;`;
 
+  let values = [request.params.title, request.params.author, request.params.isbn, request.params.image_url, request.params.description, request.params.bookshelf];
+
+  client.query(SQL, values)
+    .then (result => response.redirect(`/`)
+    );
+}
 
 
 
