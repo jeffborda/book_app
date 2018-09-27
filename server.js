@@ -35,7 +35,7 @@ app.get('/searches/new', (request, response) => {
 
 app.post('/searches', createSearch);
 
-app.post('/update', createBook);
+app.post('/create', createBook);
 
 
 
@@ -68,13 +68,13 @@ function createSearch(request, response) {
 }
 
 
-Book.prototype = {
-  save: function(bookId) {
-    const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
-    const values = [this.author, this.title, this.isbn, this.image_url, this.description, this.bookshelf];
-    client.query(SQL, values);
-  }
-};
+// Book.prototype = {
+//   save: function(bookId) {
+//     const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
+//     const values = [this.author, this.title, this.isbn, this.image_url, this.description, this.bookshelf];
+//     client.query(SQL, values);
+//   }
+// };
 
 
 
@@ -88,7 +88,7 @@ function Book (book) {
   this.description = book.volumeInfo.description || 'No description found.';
   this.img_url = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : placeHolderImg;
   this.isbn = book.volumeInfo.industryIdentifiers ? `ISBN: ${book.volumeInfo.industryIdentifiers[0].identifier}` : 'No ISBN found.'
-  this.bookshelf = 'Please put in bookshelf';
+  // this.bookshelf = 'Please put in bookshelf';
   this.showDetails ='Show Details';
 }
 
@@ -110,21 +110,20 @@ function createBook(request, response) {
   let SQL = `INSERT INTO books (title, author, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
   let values = [title, author, isbn, img_url, description, normalizedBookShelf];
 
+  console.log('DESCRIPTION: ', request.body.description);
+
   return client.query(SQL, values)
     .then(() => {
       SQL = 'SELECT * FROM books WHERE isbn=$1;';
       values = [request.body.isbn];
-      return client.query(SQL, values)
-        .then(result => response.redirect(`/books/${result.rows[0].id}`))
-        .catch(error => console.log(error))
+      return client.query(SQL, values);
+        // .then(result => response.redirect(`/books/${result.rows[0].id}`))
+        // .catch(error => console.log(error))
     })
-    .catch(error => {
-      response.render('pages/error', {errorMsg: error})
+    // .catch(error => {
+    //   response.render('pages/error', {errorMsg: error})
 }
 
-// function handleError(error, response) {
-
-// }
 
 
 
