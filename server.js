@@ -132,13 +132,6 @@ function getBook (request, response) {
     );
 }
 
-// .then(
-//   books => {
-//     response.render('pages/searches/show', {bookList: books});
-//   })
-// .catch ( error => {
-//   response.render('pages/error', {errorMsg: error});
-// })
 
 
 

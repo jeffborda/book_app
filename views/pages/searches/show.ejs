@@ -18,7 +18,7 @@
                     <p><%=book.isbn %></p>
                     <p><%=book.bookshelf %></p>
                     <button class="show-detail-button"><%= book.showDetails %></button>
-                    <form action="/create" method="post">
+                    <form class="*" action="/create" method="post">
                         <input type="text" name="title" value="<%= book.title %>" required>
                         <input type="text" name="author" value="<%= book.author %>" required>
                         <input type="text" name="isbn" value="<%= book.isbn %>" required>
