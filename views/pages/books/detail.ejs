@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <%- include('../../layout/head') %>
+    </head>
+    <body>
+        <h1>Book Google Result</h1>
+        <p><a href="/">Home</a></p>
+        <ul>
+            <li>
+                <section>
+                <% bookList( book => { %>
+                    <p><%=book.title %></p>
+                    <p><%=book.author %></p>
+                    <img src="<%=book.img_url %>" alt="book image">
+                    <p><%=book.description %></p>
+                    <p><%=book.isbn %></p>
+                    <p><%=book.bookshelf %></p>
+                <% }) %>
+                 </section>
+
+            </li>
+        </ul>
+
+    </body>
+</html>

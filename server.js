@@ -25,17 +25,15 @@ app.use(express.static('./public'));
 
 // API Routes
 app.get('/', getBooks);
-// app.get('/', (request, response) => {
-//   response.render('pages/index');
-// })
-
 app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new');
 })
-
+app.get('/searches/books/detail', (request, response) => {
+  response.render('pages/books/detail');
+})
 app.post('/searches', createSearch);
-
 app.post('/create', createBook);
+// app.get('/create/:id', getBook);
 
 
 
@@ -110,20 +108,23 @@ function createBook(request, response) {
   let SQL = `INSERT INTO books (title, author, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
   let values = [title, author, isbn, img_url, description, normalizedBookShelf];
 
-  console.log('DESCRIPTION: ', request.body.description);
-
   return client.query(SQL, values)
     .then(() => {
       SQL = 'SELECT * FROM books WHERE isbn=$1;';
       values = [request.body.isbn];
-      return client.query(SQL, values);
-        // .then(result => response.redirect(`/books/${result.rows[0].id}`))
-        // .catch(error => console.log(error))
+      return client.query(SQL, values)
+        .then(result => response.redirect(`/books/${result.rows[0].id}`))
+        .catch(error => console.log(error));
     })
-    // .catch(error => {
-    //   response.render('pages/error', {errorMsg: error})
+    .catch(error => console.log(error))
 }
 
+// function getBook {
+//   let SQL = 'SELECT * FROM books WHERE id=$1;';
+//   let values = [request.params.id];
+//   client.query(SQL, values)
+//     .then(result => response.render())
+// }
 
 
 
