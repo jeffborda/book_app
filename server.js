@@ -35,6 +35,8 @@ app.get('/searches/new', (request, response) => {
 
 app.post('/searches', createSearch);
 
+app.post('/update', createBook);
+
 
 
 
@@ -87,7 +89,7 @@ function Book (book) {
   this.img_url = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : placeHolderImg;
   this.isbn = book.volumeInfo.industryIdentifiers ? `ISBN: ${book.volumeInfo.industryIdentifiers[0].identifier}` : 'No ISBN found.'
   this.bookshelf = 'Please put in bookshelf';
-  this.save='Save';
+  this.showDetails ='Show Details';
 }
 
 // Helper functions
@@ -101,6 +103,28 @@ function getBooks(request, response) {
     });
 }
 
+function createBook(request, response) {
+  let normalizedBookShelf = request.body.bookshelf.toLowerCase();
+  let {title, author, isbn, img_url, description} = request.body;
+
+  let SQL = `INSERT INTO books (title, author, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
+  let values = [title, author, isbn, img_url, description, normalizedBookShelf];
+
+  return client.query(SQL, values)
+    .then(() => {
+      SQL = 'SELECT * FROM books WHERE isbn=$1;';
+      values = [request.body.isbn];
+      return client.query(SQL, values)
+        .then(result => response.redirect(`/books/${result.rows[0].id}`))
+        .catch(error => console.log(error))
+    })
+    .catch(error => {
+      response.render('pages/error', {errorMsg: error})
+}
+
+// function handleError(error, response) {
+
+// }
 
 
 
