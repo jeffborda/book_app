@@ -25,15 +25,15 @@ app.use(express.static('./public'));
 
 // API Routes
 app.get('/', getBooks);
-// app.get('/', (request, response) => {
-//   response.render('pages/index');
-// })
-
 app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new');
 })
-
+app.get('/searches/books/detail', (request, response) => {
+  response.render('pages/books/detail');
+})
 app.post('/searches', createSearch);
+app.post('/create', createBook);
+// app.get('/create/:id', getBook);
 
 
 
@@ -66,13 +66,13 @@ function createSearch(request, response) {
 }
 
 
-Book.prototype = {
-  save: function(bookId) {
-    const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
-    const values = [this.author, this.title, this.isbn, this.image_url, this.description, this.bookshelf];
-    client.query(SQL, values);
-  }
-};
+// Book.prototype = {
+//   save: function(bookId) {
+//     const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
+//     const values = [this.author, this.title, this.isbn, this.image_url, this.description, this.bookshelf];
+//     client.query(SQL, values);
+//   }
+// };
 
 
 
@@ -86,8 +86,8 @@ function Book (book) {
   this.description = book.volumeInfo.description || 'No description found.';
   this.img_url = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : placeHolderImg;
   this.isbn = book.volumeInfo.industryIdentifiers ? `ISBN: ${book.volumeInfo.industryIdentifiers[0].identifier}` : 'No ISBN found.'
-  this.bookshelf = 'Please put in bookshelf';
-  this.save='Save';
+  // this.bookshelf = 'Please put in bookshelf';
+  this.showDetails ='Show Details';
 }
 
 // Helper functions
@@ -101,6 +101,30 @@ function getBooks(request, response) {
     });
 }
 
+function createBook(request, response) {
+  let normalizedBookShelf = request.body.bookshelf.toLowerCase();
+  let {title, author, isbn, img_url, description} = request.body;
+
+  let SQL = `INSERT INTO books (title, author, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
+  let values = [title, author, isbn, img_url, description, normalizedBookShelf];
+
+  return client.query(SQL, values)
+    .then(() => {
+      SQL = 'SELECT * FROM books WHERE isbn=$1;';
+      values = [request.body.isbn];
+      return client.query(SQL, values)
+        .then(result => response.redirect(`/books/${result.rows[0].id}`))
+        .catch(error => console.log(error));
+    })
+    .catch(error => console.log(error))
+}
+
+// function getBook {
+//   let SQL = 'SELECT * FROM books WHERE id=$1;';
+//   let values = [request.params.id];
+//   client.query(SQL, values)
+//     .then(result => response.render())
+// }
 
 
 
