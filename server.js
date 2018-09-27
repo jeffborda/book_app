@@ -28,15 +28,20 @@ app.get('/', getBooks);
 app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new');
 })
-app.get('/searches/books/detail', (request, response) => {
+
+app.get('/pages/books/detail', (request, response) => { 
   response.render('pages/books/detail');
 })
+
+app.get('/pages/books/show', (request, response) => {
+  response.render('pages/books/show');
+})
+
+
+
 app.post('/searches', createSearch);
 app.post('/create', createBook);
-// app.get('/create/:id', getBook);
-
-
-
+app.get('/create/:id', getBook);
 
 
 function createSearch(request, response) {
@@ -113,18 +118,30 @@ function createBook(request, response) {
       SQL = 'SELECT * FROM books WHERE isbn=$1;';
       values = [request.body.isbn];
       return client.query(SQL, values)
-        .then(result => response.redirect(`/books/${result.rows[0].id}`))
+        .then(result => response.redirect(`/create/${result.rows[0].id}`))
         .catch(error => console.log(error));
     })
     .catch(error => console.log(error))
 }
 
-// function getBook {
-//   let SQL = 'SELECT * FROM books WHERE id=$1;';
-//   let values = [request.params.id];
-//   client.query(SQL, values)
-//     .then(result => response.render())
-// }
+function getBook (request, response) {
+  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let values = [request.params.id];
+  client.query(SQL, values)
+    .then(result => response.render('pages/books/show', {bookSaved: result.rows[0]})
+    );
+}
+
+// .then(
+//   books => {
+//     response.render('pages/searches/show', {bookList: books});
+//   })
+// .catch ( error => {
+//   response.render('pages/error', {errorMsg: error});
+// })
+
+
+
 
 
 

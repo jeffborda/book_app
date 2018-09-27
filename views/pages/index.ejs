@@ -23,12 +23,11 @@
         <% bookList.forEach( book => { %>
             <li><%=book.title %></li>
             <li><%=book.author %></li>
-            <li><img src="<%=book.img_url %>" alt="book image"></li>
+            <img src="<%=book.image_url %>" alt="book image">
             <li><%=book.description %></li>
             <li><%=book.isbn %></li>
         <% }) %>
     </ul>
-
 
 
 
