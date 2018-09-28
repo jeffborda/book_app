@@ -158,11 +158,13 @@ function updateBook (request, response){
 }
 
 function deleteFromDB(request, response) {
+
   let SQL = `DELETE FROM books WHERE id=$1;`;
+
   let values = [request.params.id];
   console.log('CONSOLE LOG OF VALUES::::::: ', values);
 
-  return client.query(SQL, values)
+  client.query(SQL, values)
     .then(response.redirect('/'))
     .catch(error => console.log(error));
 }
