@@ -6,6 +6,8 @@ const superagent = require('superagent');
 const pg = require('pg');
 require('dotenv').config();
 
+const methodOverride = require ('method-override');
+
 // Application Setup
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,19 +43,19 @@ app.post('/searches', createSearch);
 app.post('/book', createBook);
 app.get('/book/:id', getBook);
 
-app.post('/update', updateBook);   //to listen for "update" on index.ejs
+app.post('/update/:id', updateBook);   //to listen for "update" on index.ejs
 
 app.get('/home-detail/:id', detailHome)
 
-// app.use(methodOverride ((request, response) => {
-//   if (request.body && typeof request.body === 'object' && 'method' in request.body) {
-//     let method = request.body._method;
-//     delete request.body._method;
-//     return method;
-//   }
-// }))
+app.use(methodOverride ((request, response) => {
+  if (request.body && typeof request.body === 'object' && '_method' in request.body) {
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}))
 
-// app.put()
+app.put('/update/:id', updateBook)
 
 
 
@@ -161,7 +163,7 @@ function updateBook (request, response){
   let values = [request.body.title, request.body.author, request.body.isbn, request.body.image_url, request.body.description, request.body.bookshelf, request.params.id];
 
   client.query(SQL, values)
-    .then(response.redirect(`/book/${request.params.id}`)
+    .then(response.redirect(`/home-detail/${request.params.id}`)
     );
 }
 //1. need to add methodOverride
@@ -170,7 +172,6 @@ function updateBook (request, response){
 function detailHome(request, response) {
   let SQL = 'SELECT * FROM books WHERE id=$1;';
   let values = [request.params.id];
-  console.log('request.params: ', request.params);
   return client.query(SQL, values)
     .then( result => response.render('pages/books/detail', {bookSaved: result.rows[0]}));
 

@@ -18,8 +18,7 @@
                     <p> <%=bookSaved.bookshelf %> </p>
                     <button class="update-book"> Update Book </button>
 
-                 <!-- <form action="/update" method="post">   -->
-                <form action="/update" method="post" class="hidden">
+                    <form action="/update/<%=bookSaved.id%>" method="post" class="hidden">
                         <input type="text" name="title" value="<%= bookSaved.title %>" required>
                         <input type="text" name="author" value="<%= bookSaved.author %>" required>
                         <input type="text" name="isbn" value="<%= bookSaved.isbn %>" required>
@@ -27,7 +26,7 @@
                         <input type="text" name="description" value="<%= bookSaved.description %>" required>
                         <input type="text" name="bookshelf" value="<%= bookSaved.bookshelf %>" required>                       
                         <button type="submit">Save to My Bookshelf</button>
-                </form>
+                    </form>
                 </section>
 
             </li>
