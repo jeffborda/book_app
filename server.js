@@ -43,7 +43,8 @@ app.post('/searches', createSearch);
 app.post('/book', createBook);
 app.get('/book/:id', getBook);
 
-app.post('/update/:id', updateBook);   //to listen for "update" on index.ejs
+app.post('/update/:id', updateBook);// to listen for "update" on index.ejs
+app.delete('/update/:id', deleteFromDB);// <<<<<< HELPER FUNCTION IS NOT NOT BEING CALLED
 
 app.get('/home-detail/:id', detailHome)
 
@@ -55,7 +56,8 @@ app.use(methodOverride ((request, response) => {
   }
 }))
 
-app.put('/update/:id', updateBook)
+// app.put('/update/:id', updateBook)
+
 
 
 
@@ -84,16 +86,6 @@ function createSearch(request, response) {
       response.render('pages/error', {errorMsg: error});
     })
 }
-
-
-// Book.prototype = {
-//   save: function(bookId) {
-//     const SQL = `INSERT INTO books (author, title, isbn, image_url, description, bookshelf) VALUES ($1, $2, $3, $4, $5, $6);`;
-//     const values = [this.author, this.title, this.isbn, this.image_url, this.description, this.bookshelf];
-//     client.query(SQL, values);
-//   }
-// };
-
 
 
 function Book (book) {
@@ -159,15 +151,23 @@ function updateBook (request, response){
       bookshelf=$6
     WHERE id=$7;`;
 
-  console.log('request.body: ', request.body);
   let values = [request.body.title, request.body.author, request.body.isbn, request.body.image_url, request.body.description, request.body.bookshelf, request.params.id];
 
   client.query(SQL, values)
-    .then(response.redirect(`/home-detail/${request.params.id}`)
-    );
+    .then(response.redirect(`/home-detail/${request.params.id}`));
 }
-//1. need to add methodOverride
-//4. delete button needs to be outside the form
+
+function deleteFromDB(request, response) {
+
+  let SQL = `DELETE FROM books WHERE id=$1;`;
+
+  let values = [request.params.id];
+  console.log('CONSOLE LOG OF VALUES::::::: ', values);
+
+  client.query(SQL, values)
+    .then(response.redirect('/'))
+    .catch(error => console.log(error));
+}
 
 function detailHome(request, response) {
   let SQL = 'SELECT * FROM books WHERE id=$1;';
@@ -176,6 +176,7 @@ function detailHome(request, response) {
     .then( result => response.render('pages/books/detail', {bookSaved: result.rows[0]}));
 
 }
+
 
 
 
