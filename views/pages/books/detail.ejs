@@ -27,6 +27,12 @@
                         <input type="text" name="bookshelf" value="<%= bookSaved.bookshelf %>" required>                       
                         <button type="submit">Save to My Bookshelf</button>
                     </form>
+
+                    <!-- DELETE BUTTON NEEDS TO BE FIXED -->
+                    <form action="/update/<%=bookSaved.id%>" method="delete" class="hidden">
+                        <button type="submit" value="delete">Delete from My Bookshelf</button>
+                    </form>
+
                 </section>
 
             </li>

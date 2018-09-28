@@ -7,5 +7,5 @@ $('.show-detail-button').on('click', function() {
 
 $('.update-book').on('click', function() {
   //this.next  remove class hide-section
-  $(this).next().removeClass('hidden');
+  $(this).siblings().removeClass('hidden');
 });
