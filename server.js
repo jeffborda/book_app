@@ -38,8 +38,8 @@ app.get('/pages/books/show', (request, response) => {
 })
 
 app.post('/searches', createSearch);
-app.post('/create', createBook);
-app.get('/create/:id', getBook);
+app.post('/create', createBook);  //change name "create" to "book", and change in ejs
+app.get('/create/:id', getBook);  //change name "create" to "book", and change in ejs
 
 app.post('/update', updateBook);   //to listen for "update" on index.ejs
 
@@ -143,16 +143,18 @@ function updateBook (request, response){
       image_url=$4,
       description=$5,
       bookshelf=$6
-    WHERE title=$1;`;
+    WHERE id=$7;`;
 
-  let values = [request.params.title, request.params.author, request.params.isbn, request.params.image_url, request.params.description, request.params.bookshelf];
+  console.log('request.body: ', request.body);
+  let values = [request.body.title, request.body.author, request.body.isbn, request.body.image_url, request.body.description, request.body.bookshelf, request.params.id];
 
   client.query(SQL, values)
-    .then (result => response.redirect(`/`)
+    .then(response.redirect(`/create/${request.params.id}`)
     );
 }
-
-
+//1. need to add methodOverride
+//2. install the npm package for method Override
+//3. see wednesday class video
 
 
 
