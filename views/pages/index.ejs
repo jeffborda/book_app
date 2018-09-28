@@ -20,16 +20,17 @@
     <h1>Database Results</h1>
     
     <ul>
-        <% bookList.forEach( book => { %>
+      <% bookList.forEach( book => { %>
+        <form action= "/home-detail/<%=book.id%>" method="GET">
             <li><%=book.title %></li>
             <li><%=book.author %></li>
             <img src="<%=book.image_url %>" alt="book image">
             <li><%=book.description %></li>
             <li><%=book.isbn %></li>
+            <button> Show Detail </button>
+        </form>
         <% }) %>
     </ul>
-
-
 
 
   </form>

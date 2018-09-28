@@ -5,15 +5,36 @@
         <%- include('../../layout/head') %>
     </head>
     <body>
-        <h1>Book Detail View</h1>
+        <h1>Show Book After Being Saved</h1>
         <p><a href="/">Home</a></p>
         <ul>
             <li>
                 <section>
-                 </section>
+                    <p> <%=bookSaved.title %> </p>
+                    <p> <%=bookSaved.author %> </p>
+                    <p> <%=bookSaved.isbn %> </p>
+                    <img src="<%=bookSaved.image_url%>" alt="book image">
+                    <p> <%=bookSaved.description %> </p>
+                    <p> <%=bookSaved.bookshelf %> </p>
+                    <button class="update-book"> Update Book </button>
+
+                    <form action="/update/<%=bookSaved.id%>" method="post" class="hidden">
+                        <input type="text" name="title" value="<%= bookSaved.title %>" required>
+                        <input type="text" name="author" value="<%= bookSaved.author %>" required>
+                        <input type="text" name="isbn" value="<%= bookSaved.isbn %>" required>
+                        <input type="text" name="image_url" value="<%= bookSaved.image_url %>" required>
+                        <input type="text" name="description" value="<%= bookSaved.description %>" required>
+                        <input type="text" name="bookshelf" value="<%= bookSaved.bookshelf %>" required>                       
+                        <button type="submit">Save to My Bookshelf</button>
+                    </form>
+                </section>
 
             </li>
         </ul>
-
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+        <script src = "/js/app.js"></script>
     </body>
 </html>

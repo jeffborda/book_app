@@ -6,6 +6,8 @@ const superagent = require('superagent');
 const pg = require('pg');
 require('dotenv').config();
 
+const methodOverride = require ('method-override');
+
 // Application Setup
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -29,7 +31,7 @@ app.get('/searches/new', (request, response) => {
   response.render('pages/searches/new');
 })
 
-app.get('/pages/books/detail', (request, response) => { 
+app.get('/pages/books/detail', (request, response) => {
   response.render('pages/books/detail');
 })
 
@@ -37,11 +39,24 @@ app.get('/pages/books/show', (request, response) => {
   response.render('pages/books/show');
 })
 
-
-
 app.post('/searches', createSearch);
-app.post('/create', createBook);
-app.get('/create/:id', getBook);
+app.post('/book', createBook);
+app.get('/book/:id', getBook);
+
+app.post('/update/:id', updateBook);   //to listen for "update" on index.ejs
+
+app.get('/home-detail/:id', detailHome)
+
+app.use(methodOverride ((request, response) => {
+  if (request.body && typeof request.body === 'object' && '_method' in request.body) {
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}))
+
+app.put('/update/:id', updateBook)
+
 
 
 function createSearch(request, response) {
@@ -118,7 +133,7 @@ function createBook(request, response) {
       SQL = 'SELECT * FROM books WHERE isbn=$1;';
       values = [request.body.isbn];
       return client.query(SQL, values)
-        .then(result => response.redirect(`/create/${result.rows[0].id}`))
+        .then(result => response.redirect(`/book/${result.rows[0].id}`)) 
         .catch(error => console.log(error));
     })
     .catch(error => console.log(error))
@@ -132,7 +147,35 @@ function getBook (request, response) {
     );
 }
 
+function updateBook (request, response){
+  let SQL = `
+    UPDATE books
+    SET 
+      title=$1,
+      author=$2,
+      isbn=$3,
+      image_url=$4,
+      description=$5,
+      bookshelf=$6
+    WHERE id=$7;`;
 
+  console.log('request.body: ', request.body);
+  let values = [request.body.title, request.body.author, request.body.isbn, request.body.image_url, request.body.description, request.body.bookshelf, request.params.id];
+
+  client.query(SQL, values)
+    .then(response.redirect(`/home-detail/${request.params.id}`)
+    );
+}
+//1. need to add methodOverride
+//4. delete button needs to be outside the form
+
+function detailHome(request, response) {
+  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let values = [request.params.id];
+  return client.query(SQL, values)
+    .then( result => response.render('pages/books/detail', {bookSaved: result.rows[0]}));
+
+}
 
 
 
