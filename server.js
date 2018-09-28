@@ -38,10 +38,13 @@ app.get('/pages/books/show', (request, response) => {
 })
 
 app.post('/searches', createSearch);
-app.post('/create', createBook);  //change name "create" to "book", and change in ejs
-app.get('/create/:id', getBook);  //change name "create" to "book", and change in ejs
+app.post('/book', createBook);
+app.get('/book/:id', getBook);
 
 app.post('/update', updateBook);   //to listen for "update" on index.ejs
+
+app.get('/home-detail/:id', detailHome)
+
 
 
 
@@ -119,7 +122,7 @@ function createBook(request, response) {
       SQL = 'SELECT * FROM books WHERE isbn=$1;';
       values = [request.body.isbn];
       return client.query(SQL, values)
-        .then(result => response.redirect(`/create/${result.rows[0].id}`))
+        .then(result => response.redirect(`/book/${result.rows[0].id}`)) 
         .catch(error => console.log(error));
     })
     .catch(error => console.log(error))
@@ -149,13 +152,22 @@ function updateBook (request, response){
   let values = [request.body.title, request.body.author, request.body.isbn, request.body.image_url, request.body.description, request.body.bookshelf, request.params.id];
 
   client.query(SQL, values)
-    .then(response.redirect(`/create/${request.params.id}`)
+    .then(response.redirect(`/book/${request.params.id}`)
     );
 }
 //1. need to add methodOverride
-//2. install the npm package for method Override
-//3. see wednesday class video
 //4. delete button needs to be outside the form
+
+function detailHome(request, response) {
+  let SQL = 'SELECT * FROM books WHERE id=$1;';
+  let values = [request.params.id];
+  console.log('request.params: ', request.params);
+  return client.query(SQL, values)
+    .then( result => response.render('pages/books/detail', {bookSaved: result.rows[0]}));
+
+}
+
+
 
 
 

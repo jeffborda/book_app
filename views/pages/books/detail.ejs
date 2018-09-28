@@ -5,12 +5,21 @@
         <%- include('../../layout/head') %>
     </head>
     <body>
-        <h1>Book Detail View</h1>
+        <h1>Show Book After Being Saved</h1>
         <p><a href="/">Home</a></p>
         <ul>
             <li>
                 <section>
-                 </section>
+                  <form>
+                    <p> <%=bookSaved.title %> </p>
+                    <p> <%=bookSaved.author %> </p>
+                    <p> <%=bookSaved.isbn %> </p>
+                    <img src="<%=bookSaved.image_url%>" alt="book image">
+                    <p> <%=bookSaved.description %> </p>
+                    <p> <%=bookSaved.bookshelf %> </p>
+                    <button> Update Book </button>
+                </form>
+                </section>
 
             </li>
         </ul>
