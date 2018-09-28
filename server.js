@@ -155,6 +155,7 @@ function updateBook (request, response){
 //1. need to add methodOverride
 //2. install the npm package for method Override
 //3. see wednesday class video
+//4. delete button needs to be outside the form
 
 
 
