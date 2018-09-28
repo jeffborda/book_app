@@ -45,6 +45,15 @@ app.post('/update', updateBook);   //to listen for "update" on index.ejs
 
 app.get('/home-detail/:id', detailHome)
 
+// app.use(methodOverride ((request, response) => {
+//   if (request.body && typeof request.body === 'object' && 'method' in request.body) {
+//     let method = request.body._method;
+//     delete request.body._method;
+//     return method;
+//   }
+// }))
+
+// app.put()
 
 
 
