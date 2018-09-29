@@ -5,22 +5,26 @@
         <%- include('../../layout/head') %>
     </head>
     <body>
-        <h1>Show Book After Being Saved</h1>
-        <p><a href="/">Home</a></p>
-        <ul>
-            <li>
+    <header>
+        <h1>This Book Is Saved</h1>
+
+    </header>
+    <main>
+        <nav>
+        <ul><a href="/">Home</a></ul>
+        </nav>
+            <div>
                 <section>
-                    <p> <%=bookSaved.title %> </p>
-                    <p> <%=bookSaved.author %> </p>
+                    <p>Title: <%=bookSaved.title %> </p>
+                    <p>Author: <%=bookSaved.author %> </p>
                     <p> <%=bookSaved.isbn %> </p>
                     <img src="<%=bookSaved.image_url%>" alt="book image">
-                    <p> <%=bookSaved.description %> </p>
-                    <p> <%=bookSaved.bookshelf %> </p>
+                    <p>Description: <%=bookSaved.description %> </p>
+                    <p>Bookshelf: <%=bookSaved.bookshelf %> </p>
                 </section>
 
-            </li>
-        </ul>
-
+            </div>
+    </main>
     </body>
 </html>
 
