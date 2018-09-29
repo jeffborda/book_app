@@ -29,8 +29,9 @@
                     </form>
 
                     <!-- DELETE BUTTON NEEDS TO BE FIXED -->
-                    <form action="/update/<%=bookSaved.id%>" method="post" class="hidden">
-                        <button type="submit" value="delete">Delete from My Bookshelf</button>
+                    <form action="/book/<%=bookSaved.id%>" method="post" class="hidden">
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit">Delete from My Bookshelf</button>
                     </form>
 
                 </section>

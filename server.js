@@ -25,6 +25,14 @@ client.on('error', err => console.log(err));
 app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 
+app.use(methodOverride ((request, response) => {
+  if (request.body && typeof request.body === 'object' && '_method' in request.body) {
+    let method = request.body._method;
+    delete request.body._method;
+    return method;
+  }
+}))
+
 // API Routes
 app.get('/', getBooks);
 app.get('/searches/new', (request, response) => {
@@ -44,17 +52,10 @@ app.post('/book', createBook);
 app.get('/book/:id', getBook);
 
 app.post('/update/:id', updateBook);// to listen for "update" on index.ejs
-app.delete('/update/:id', deleteFromDB);// <<<<<< HELPER FUNCTION IS NOT NOT BEING CALLED
 
 app.get('/home-detail/:id', detailHome)
+app.delete('/book/:id', deleteFromDB);
 
-app.use(methodOverride ((request, response) => {
-  if (request.body && typeof request.body === 'object' && '_method' in request.body) {
-    let method = request.body._method;
-    delete request.body._method;
-    return method;
-  }
-}))
 
 // app.put('/update/:id', updateBook)
 
@@ -125,7 +126,7 @@ function createBook(request, response) {
       SQL = 'SELECT * FROM books WHERE isbn=$1;';
       values = [request.body.isbn];
       return client.query(SQL, values)
-        .then(result => response.redirect(`/book/${result.rows[0].id}`)) 
+        .then(result => response.redirect(`/book/${result.rows[0].id}`))
         .catch(error => console.log(error));
     })
     .catch(error => console.log(error))
@@ -164,7 +165,7 @@ function deleteFromDB(request, response) {
   let values = [request.params.id];
   console.log('CONSOLE LOG OF VALUES::::::: ', values);
 
-  client.query(SQL, values)
+  return client.query(SQL, values)
     .then(response.redirect('/'))
     .catch(error => console.log(error));
 }
@@ -181,18 +182,6 @@ function detailHome(request, response) {
 
 
 
-
-
-
-
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-
-
-
-
-
-
-
-
 
