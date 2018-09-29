@@ -10,28 +10,27 @@
     </head>
     <body>
         <h1>New Search</h1>
-        <p><a href="/">Home</a></p>
-        <ul>
+        <ul><a href="/">Home</a></ul>
+        <div>
             <form action="/searches" method="post">
                 <input type="text" name="search" placeholder="Enter a title or author" required>
                 <fielset>
                   <label for="title">
                     <span>Title</span>
-                    <input type="radio" name="search" value="title" required>
+                    <input class = "radio-button" type="radio" name="search" value="title" required>
                   </label>
                 </fielset>
                 
-                  
                 <fielset>
-                  <label for="author">
-                      <span>Author</span>
-                      <input type="radio" name="search" value="author" required>
-                  </label>
+                    <label for="author">
+                        <span>Author</span>
+                        <input class = "radio-button" type="radio" name="search" value="author" required>
+                    </label>
                 </fielset>
           
                 
-                <button type="submit">Search Google API</button>
+                <button type="submit" class="search-new-button">Search Google API</button>
               </form>
-        </ul>
+        </div>
     </body>
 </html>

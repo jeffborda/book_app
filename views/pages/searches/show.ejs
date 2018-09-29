@@ -5,21 +5,24 @@
         <%- include('../../layout/head') %>
     </head>
     <body>
-        <h1>Book Google Result</h1>
-        <p><a href="/">Home</a></p>
-        <ul>
-            <li>
+        <header>
+            <h1>Book Search Result</h1>
+        </header>
+        <nav>
+        <ul><a href="/">Home</a></ul>
+        </nav>
+        <main>
+        <div>
                 <section>
                 <% bookList.forEach( book => { %>
-                    <p><%=book.title %></p>
-                    <p><%=book.author %></p>
+                    <h2>Title: <%=book.title %></h2>
+                    <p>Author: <%=book.author %></p>
                     <img src="<%=book.img_url %>" alt="book image">
-                    <p><%=book.description %></p>
+                    <p>Description: <%=book.description %></p>
                     <p><%=book.isbn %></p>
-                    <p><%=book.bookshelf %></p>
                     <button class="show-detail-button"><%= book.showDetails %></button>
 
-                    <form class="*" action="/book" method="post" class="hidden">  
+                    <form class="hidden show-detail-button" action="/book" method="post">  
                         <input type="text" name="title" value="<%= book.title %>" required>
                         <input type="text" name="author" value="<%= book.author %>" required>
                         <input type="text" name="isbn" value="<%= book.isbn %>" required>
@@ -31,11 +34,12 @@
                 <% }) %>
                  </section>
 
-            </li>
-        </ul>
+        </div>
+        </main>
         <script
             src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
+        <script src = "/js/app.js"></script>
     </body>
 </html>

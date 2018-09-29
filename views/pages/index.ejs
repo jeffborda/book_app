@@ -4,29 +4,25 @@
   <%- include('../layout/head') %>
 </head>
 <body>
-  
+  <header>
+    <h1>BookList Home</h1>
+
+  </header>
+
+
   <main>
     <nav>
-      <h1>Best Books!</h1>
+      <ul><a href="/searches/new">Search New Books</a></ul>
     </nav>
-    <div class="search-by">
-      <h2>Search By Title Or Author</h2>
-    </div>
-
-    <p><a href="/searches/new">Search A New Book</a></p>
-
 
     <!-- Results From Database  -->
-    <h1>Database Results</h1>
     
     <ul>
       <% bookList.forEach( book => { %>
         <form action= "/home-detail/<%=book.id%>" method="GET">
-            <li><%=book.title %></li>
-            <li><%=book.author %></li>
+            <h2><%=book.title %></h2>
+            <li>Author: <%=book.author %></li>
             <img src="<%=book.image_url %>" alt="book image">
-            <li><%=book.description %></li>
-            <li><%=book.isbn %></li>
             <button> Show Detail </button>
         </form>
         <% }) %>

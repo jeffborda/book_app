@@ -5,17 +5,22 @@
         <%- include('../../layout/head') %>
     </head>
     <body>
-        <h1>Show Book After Being Saved</h1>
-        <p><a href="/">Home</a></p>
-        <ul>
-            <li>
+      <header>
+        <h1>Book Detail</h1>
+
+      </header>
+      <main>
+        <nav>
+            <ul><a href="/">Home</a></ul>
+        </nav>
+        <div>
                 <section>
-                    <p> <%=bookSaved.title %> </p>
-                    <p> <%=bookSaved.author %> </p>
+                    <h2> Book Title: <%=bookSaved.title %> </h2>
+                    <p> Author: <%=bookSaved.author %> </p>
                     <p> <%=bookSaved.isbn %> </p>
                     <img src="<%=bookSaved.image_url%>" alt="book image">
-                    <p> <%=bookSaved.description %> </p>
-                    <p> <%=bookSaved.bookshelf %> </p>
+                    <p> Description: <%=bookSaved.description %> </p>
+                    <p> Bookshelf: <%=bookSaved.bookshelf %> </p>
                     <button class="update-book"> Update Book </button>
 
                     <form action="/update/<%=bookSaved.id%>" method="post" class="hidden">
@@ -36,8 +41,8 @@
 
                 </section>
 
-            </li>
-        </ul>
+        </div>
+    </main>
         <script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
